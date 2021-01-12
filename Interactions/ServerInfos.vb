@@ -38,12 +38,9 @@ Namespace Bot.Interactions
                         Dim server As JObject = JObject.Parse(server_raw)
                         If Not server("error").ToObject(Of Boolean) Then
                             data.Add("content", Lang.Translate(lang_, "bot.interactions.serverinfos.error.unknown"))
-                            Dim embed As New JObject
-                            embed.Add("title", server("modname"))
-                            Dim embed_fields As New JArray
-                            Dim field
-                            embed_fields.Add()
-                            data.Add("embed", embed)
+                            Dim embed As New DiscordEmbed
+                            embed.WithAuthor(server("modname"), )
+                            data.Add("embed", JObject.FromObject(embed))
                             Response.Add("data", data)
                         End If
                     Catch ex As Exception
