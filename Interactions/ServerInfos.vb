@@ -36,17 +36,33 @@ Namespace Bot.Interactions
                     Try
                         Dim server_raw = client.DownloadString($"https://csgo.discord.wf/server/infos.php?address={ip}&port={port}")
                         Dim server As JObject = JObject.Parse(server_raw)
+                        If Not server.ContainsKey("error") Then
+                            server.Add("error", False)
+                        End If
                         If Not server("error").ToObject(Of Boolean) Then
-                            data.Add("content", Lang.Translate(lang_, "bot.interactions.serverinfos.error.unknown"))
+                            data.Add("content", "")
                             Dim embed As New DiscordEmbed
-                            embed.WithAuthor(server("modname"), )
-                            data.Add("embed", JObject.FromObject(embed))
+                            embed.WithAuthor(server("modname"), , $"https://github.com/ZaptoInc/SourceServers/raw/main/games/{server("mod")}.png")
+                            embed.WithCurrentTimestamp()
+                            embed.AddField("IP", $"[{server("ip")}:{server("port")}](steam://connect/{server("ip")}:{server("port")})", True)
+                            embed.AddField("Map", server("map"), True)
+                            embed.AddField("Players", $"{server("players")}/{server("places")}", True)
+                            Select Case server("mod").ToString
+                                Case "csgo", "gmod"
+                                    embed.WithThumbnail($"https://github.com/ZaptoInc/SourceServers/raw/main/games/{server("mod")}/{server("map")}.png")
+                            End Select
+
+                            Dim embeds As New JArray
+                            embeds.Add(JObject.FromObject(embed))
+                            data.Add("embeds", embeds)
                             Response.Add("data", data)
+                            Return Response
                         End If
                     Catch ex As Exception
                         data.Add("content", Lang.Translate(lang_, "bot.interactions.serverinfos.error.unknown"))
                         Response.Add("data", data)
                         Console.WriteLine(ex.ToString)
+                        Return Response
                     End Try
 
                 End If

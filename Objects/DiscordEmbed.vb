@@ -10,6 +10,8 @@
     Public author As DiscordEmbedAuthor
     Public fields As New List(Of DiscordEmbedFields)
 
+    Public type As String = "rich"
+
     Public Function WithTitle(title As String) As DiscordEmbed
         Me.title = title
         Return Me
