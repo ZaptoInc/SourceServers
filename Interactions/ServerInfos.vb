@@ -40,16 +40,34 @@ Namespace Bot.Interactions
                             server.Add("error", False)
                         End If
                         If Not server("error").ToObject(Of Boolean) Then
-                            data.Add("content", "")
+                            data.Add("content", Lang.Translate(lang_, "bot.interactions.serverinfos.success.text"))
                             Dim embed As New DiscordEmbed
-                            embed.WithAuthor(server("modname"), , $"https://github.com/ZaptoInc/SourceServers/raw/main/games/{server("mod")}.png")
+                            Select Case server("mod")
+                                Case "garrysmod"
+                                    embed.WithAuthor($"Garry's Mod ({server("modname")})", , $"https://github.com/ZaptoInc/SourceServers/raw/main/games/{server("mod")}.png")
+                                Case "tf"
+                                    embed.WithAuthor("Team Fortress 2", , $"https://github.com/ZaptoInc/SourceServers/raw/main/games/{server("mod")}.png")
+                                Case "cstrike"
+                                    Select Case server("protocol").ToObject(Of Integer)
+                                        Case 73
+                                            embed.WithAuthor("Counter-Strike Source", , $"https://github.com/ZaptoInc/SourceServers/raw/main/games/css.png")
+                                        Case Else
+                                            embed.WithAuthor("Counter-Strike", , $"https://github.com/ZaptoInc/SourceServers/raw/main/games/cs.png")
+                                    End Select
+
+
+                                Case Else
+                                    embed.WithAuthor(server("modname"), , $"https://github.com/ZaptoInc/SourceServers/raw/main/games/{server("mod")}.png")
+                            End Select
+
                             embed.WithCurrentTimestamp()
-                            embed.AddField("IP", $"[{server("ip")}:{server("port")}](steam://connect/{server("ip")}:{server("port")})", True)
-                            embed.AddField("Map", server("map"), True)
-                            embed.AddField("Players", $"{server("players")}/{server("places")}", True)
+                            embed.WithDescription($"__{server("name")}__")
+                            embed.AddField(Lang.Translate(lang_, "bot.interactions.serverinfos.ip"), $"{server("ip")}:{server("port")}", True)
+                            embed.AddField(Lang.Translate(lang_, "bot.interactions.serverinfos.map"), server("map"), True)
+                            embed.AddField(Lang.Translate(lang_, "bot.interactions.serverinfos.players"), $"{server("players")}/{server("places")}", True)
                             Select Case server("mod").ToString
-                                Case "csgo", "gmod"
-                                    embed.WithThumbnail($"https://github.com/ZaptoInc/SourceServers/raw/main/games/{server("mod")}/{server("map")}.png")
+                                Case "csgo"
+                                    embed.WithThumbnail($"https://github.com/ZaptoInc/SourceServers/raw/main/games/{server("mod")}/{server("map")}.jpg")
                             End Select
 
                             Dim embeds As New JArray
@@ -57,6 +75,23 @@ Namespace Bot.Interactions
                             data.Add("embeds", embeds)
                             Response.Add("data", data)
                             Return Response
+                        Else
+                            If server("message") = "failed to connect to server" Then
+                                data.Add("content", Lang.Translate(lang_, "bot.interactions.serverinfos.error.failedtoconnect.text"))
+                                Dim embed As New DiscordEmbed
+                                embed.WithAuthor(Lang.Translate(lang_, "bot.interactions.serverinfos.error.failedtoconnect.game"), "https://github.com/ZaptoInc/SourceServers/raw/main/games/unknown.png")
+                                embed.AddField("IP", $"{ip}:{port}", True)
+                                embed.AddField(Lang.Translate(lang_, "bot.interactions.serverinfos.map"), "?", True)
+                                embed.AddField(Lang.Translate(lang_, "bot.interactions.serverinfos.players"), "?/?", True)
+                                Dim embeds As New JArray
+                                embeds.Add(JObject.FromObject(embed))
+                                data.Add("embeds", embeds)
+                                Response.Add("data", data)
+                            Else
+                                data.Add("content", Lang.Translate(lang_, "bot.interactions.serverinfos.error.unknown"))
+                                Response.Add("data", data)
+                                Return Response
+                            End If
                         End If
                     Catch ex As Exception
                         data.Add("content", Lang.Translate(lang_, "bot.interactions.serverinfos.error.unknown"))
@@ -72,6 +107,7 @@ Namespace Bot.Interactions
                 Console.WriteLine(ex.ToString)
                 Return Response
             End Try
+            Return Response
         End Function
     End Class
 End Namespace

@@ -3,7 +3,7 @@
     Public description As String
     Public url As String
     Public timestamp As Date
-    Public color As Integer
+    Public color As Integer = 3092790
     Public footer As DiscordEmbedFooter
     Public image As DiscordEmbedImage
     Public thumbnail As DiscordEmbedImage
