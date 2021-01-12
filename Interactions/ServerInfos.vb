@@ -79,7 +79,8 @@ Namespace Bot.Interactions
                             If server("message") = "failed to connect to server" Then
                                 data.Add("content", Lang.Translate(lang_, "bot.interactions.serverinfos.error.failedtoconnect.text"))
                                 Dim embed As New DiscordEmbed
-                                embed.WithAuthor(Lang.Translate(lang_, "bot.interactions.serverinfos.error.failedtoconnect.game"), "https://github.com/ZaptoInc/SourceServers/raw/main/games/unknown.png")
+                                embed.WithAuthor(Lang.Translate(lang_, "bot.interactions.serverinfos.error.failedtoconnect.game"),, "https://github.com/ZaptoInc/SourceServers/raw/main/games/unknown.png")
+                                embed.WithCurrentTimestamp()
                                 embed.AddField("IP", $"{ip}:{port}", True)
                                 embed.AddField(Lang.Translate(lang_, "bot.interactions.serverinfos.map"), "?", True)
                                 embed.AddField(Lang.Translate(lang_, "bot.interactions.serverinfos.players"), "?/?", True)
