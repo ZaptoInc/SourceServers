@@ -5,6 +5,7 @@ Imports System.IO
 Imports System.Text
 Imports Org.BouncyCastle.Crypto.Parameters
 Imports Org.BouncyCastle.Crypto.Signers
+Imports Newtonsoft.Json
 
 Namespace Web.API.V2.Webhooks
     <Route("api/v2/webhook/interactions")>
@@ -31,6 +32,7 @@ Namespace Web.API.V2.Webhooks
 
                     If verified Then
                         Dim Request As JObject = JObject.Parse(BodyJson)
+                        Dim request_object = JsonConvert.DeserializeObject(Of DiscordSlashInteraction)(Request.ToString)
                         If Request("type").ToObject(Of Integer) = 1 Then
                             Response = New JObject From {
                                 {"type", 1}
@@ -41,7 +43,7 @@ Namespace Web.API.V2.Webhooks
                                 Dim data As JObject = Request("data")
                                 If data.ContainsKey("name") Then
                                     If Bot.Integrations.GetInteractions.ContainsKey(data("name")) Then
-                                        Response = Bot.Integrations.GetInteractions()(data("name")).Run(Request)
+                                        Response = Bot.Integrations.GetInteractions()(data("name")).Run(request_object)
                                         If Response IsNot Nothing Then
                                             Return Json(Response)
                                         Else

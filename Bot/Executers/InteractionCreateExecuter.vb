@@ -22,8 +22,8 @@ Public Module InteractionCreateExecuter
 
                 Dim r As Url = DiscordAPI.AppendPathSegments("interactions", Request("id"), Request("token"), "callback")
                 Dim req_resp As IFlurlResponse = r.SendJsonAsync(System.Net.Http.HttpMethod.Post, Response).Result
-
-                Response = Bot.Integrations.GetInteractions()(data("name")).Run(Request)
+                Dim request_object = JsonConvert.DeserializeObject(Of DiscordSlashInteraction)(Request.ToString)
+                Response = Bot.Integrations.GetInteractions()(data("name")).Run(request_object)
 
                 r = "https://discord.com/api/webhooks".AppendPathSegments(Bot.Client.CurrentApplication.Id, Request("token"), "messages", "@original")
                 req_resp = r.SendJsonAsync(System.Net.Http.HttpMethod.Patch, Response("data")).Result

@@ -2,6 +2,7 @@ Imports System
 Imports System.IO
 Imports System.Net
 Imports System.Threading
+Imports System.Timers
 Imports Ceen
 Imports Ceen.Httpd
 Imports Ceen.Httpd.Logging
@@ -11,6 +12,8 @@ Imports MongoDB.Driver
 Module Program
     Public mongo_client As MongoClient
     Public db As MongoDatabase
+
+
 
     Public ReadOnly DiscordAPI As String = "https://discord.com/api/v8/"
     Sub Main(args As String())

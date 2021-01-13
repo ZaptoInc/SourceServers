@@ -6,7 +6,7 @@ Namespace Bot.Interactions
     Public Class ServerInfos
         Implements InteractionsExecutor
 
-        Public Function Run(json As JObject) As JObject Implements InteractionsExecutor.Run
+        Public Function Run(obj As DiscordSlashInteraction) As JObject Implements InteractionsExecutor.Run
             Dim client As WebClient = New WebClient()
             Dim Response As New JObject From {
                 {"type", 4}
@@ -14,27 +14,36 @@ Namespace Bot.Interactions
             Dim data As New JObject
             Dim lang_ As String = "en"
             Try
-                Dim ip As String = ""
-                Dim port As Integer = 27015
+                Dim ip As DiscordSlashInteractionOption
+                Dim port As DiscordSlashInteractionOption
 
-                Dim member As JObject = json("member")
-                Dim user As JObject = member("user")
+                Dim obj_guild_id As ULong = obj.guild_id
+                Dim obj_channel_id As ULong = obj.channel_id
+
+                Dim obj_member As DiscordSlashInteractionMember = obj.member
+                Dim obj_user As DiscordUser = obj_member.user
+                Dim obj_data As DiscordSlashInteractionData = obj.data
                 Try
-                    Dim data_options As JArray = json("data")("options")
-                    For Each [option] In data_options
-                        Select Case [option]("name")
+                    For Each [option] In obj_data.options
+                        Select Case [option].name
                             Case "ip"
-                                ip = [option]("value")
+                                ip = [option]
                             Case "port"
-                                port = [option]("value")
+                                port = [option]
                         End Select
                     Next
                 Catch
                 End Try
 
-                If Not ip = "" Then
+                If Not ip.value = "" Then
+                    Dim port_def = 27015
+                    If port IsNot Nothing Then
+                        If port.value > 0 Then
+                            port_def = port.value
+                        End If
+                    End If
                     Try
-                        Dim server_raw = client.DownloadString($"https://csgo.discord.wf/server/infos.php?address={ip}&port={port}")
+                        Dim server_raw = client.DownloadString($"https://csgo.discord.wf/server/infos.php?address={ip.value}&port={port_def}")
                         Dim server As JObject = JObject.Parse(server_raw)
                         If Not server.ContainsKey("error") Then
                             server.Add("error", False)
@@ -81,13 +90,14 @@ Namespace Bot.Interactions
                                 Dim embed As New DiscordEmbed
                                 embed.WithAuthor(Lang.Translate(lang_, "bot.interactions.serverinfos.error.failedtoconnect.game"),, "https://github.com/ZaptoInc/SourceServers/raw/main/games/unknown.png")
                                 embed.WithCurrentTimestamp()
-                                embed.AddField("IP", $"{ip}:{port}", True)
+                                embed.AddField(Lang.Translate(lang_, "bot.interactions.serverinfos.ip"), $"{ip.value}:{port_def}", True)
                                 embed.AddField(Lang.Translate(lang_, "bot.interactions.serverinfos.map"), "?", True)
                                 embed.AddField(Lang.Translate(lang_, "bot.interactions.serverinfos.players"), "?/?", True)
                                 Dim embeds As New JArray
                                 embeds.Add(JObject.FromObject(embed))
                                 data.Add("embeds", embeds)
                                 Response.Add("data", data)
+                                Return Response
                             Else
                                 data.Add("content", Lang.Translate(lang_, "bot.interactions.serverinfos.error.unknown"))
                                 Response.Add("data", data)
@@ -108,6 +118,8 @@ Namespace Bot.Interactions
                 Console.WriteLine(ex.ToString)
                 Return Response
             End Try
+            data.Add("content", "End")
+            Response.Add("data", data)
             Return Response
         End Function
     End Class

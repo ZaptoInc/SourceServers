@@ -1,5 +1,5 @@
 ﻿Imports Newtonsoft.Json.Linq
 
 Public Interface InteractionsExecutor
-    Function Run(json As JObject) As JObject
+    Function Run(obj As DiscordSlashInteraction) As JObject
 End Interface

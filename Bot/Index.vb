@@ -16,14 +16,19 @@ Namespace Bot
             }
             Client = New DiscordClient(cfg)
             Integrations.Register("serverinfos", New Bot.Interactions.ServerInfos)
+            Integrations.Register("monitor", New Bot.Interactions.Monitor)
             'Integrations.Register("serverurl", New Bot.Interactions.ServerURL)
         End Sub
 
         Async Function [Start]() As Task
+
+            monitor_timer.Interval = 60 * 1000
+            monitor_timer.Start()
             Await Client.ConnectAsync()
             Return
         End Function
         Async Function [Stop]() As Task
+            monitor_timer.Stop()
             Await Client.DisconnectAsync()
             Return
         End Function

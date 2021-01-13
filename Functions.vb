@@ -37,4 +37,16 @@ Module Functions
         Return reply
     End Function
 
+    Function IntegerToNullableBoolean(int As Integer) As Boolean?
+        If int = 1 Then
+            Return True
+        ElseIf int = 0 Then
+            Return Nothing
+        ElseIf int = -1 Then
+            Return False
+        Else
+            Throw New Exception("Integer was not between -1 and 1")
+        End If
+    End Function
+
 End Module
