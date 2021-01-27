@@ -1,0 +1,228 @@
+{
+  "name": "monitor",
+  "description": "Main command for the monitoring commands",
+  "options": [
+    {
+      "type": 1,
+      "name": "create",
+      "description": "Create a new monitor",
+      "options": [
+        {
+          "type": 3,
+          "name": "name",
+          "description": "The monitor name (unique)",
+          "required": true
+        },
+        {
+          "type": 3,
+          "name": "ip",
+          "description": "IP or domain of the server",
+          "required": true
+        },
+        {
+          "type": 4,
+          "name": "port",
+          "description": "Port of the server (default:27015)"
+        }
+      ]
+    },
+    {
+      "type": 2,
+      "name": "edit",
+      "description": "Edition of a monitor",
+      "options": [
+        {
+          "type": 1,
+          "name": "host",
+          "description": "Edition of the host of this monitor",
+          "options": [
+            {
+              "type": 3,
+              "name": "name",
+              "description": "The monitor name",
+              "required": true
+            },
+            {
+              "type": 3,
+              "name": "ip",
+              "description": "IP or domain of the server"
+            },
+            {
+              "type": 4,
+              "name": "port",
+              "description": "Port of the server"
+            }
+          ]
+        },
+        {
+          "type": 1,
+          "name": "message",
+          "description": "Edition of the message of this monitor",
+          "options": [
+            {
+              "type": 3,
+              "name": "name",
+              "description": "The monitor name",
+              "required": true
+            },
+            {
+              "type": 7,
+              "name": "channel",
+              "description": "Channel of the message",
+              "required": true
+            },
+            {
+              "type": 3,
+              "name": "messageid",
+              "description": "ID of the message (creates a message if nothing)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": 1,
+      "name": "delete",
+      "description": "Delete a monitor",
+      "options": [
+        {
+          "type": 3,
+          "name": "name",
+          "description": "The monitor name",
+          "required": true
+        }
+      ]
+    },
+    {
+      "type": 1,
+      "name": "userperms",
+      "description": "Change a user's permissions",
+      "options": [
+        {
+          "type": 6,
+          "name": "user",
+          "description": "Specify the user you want to edit (nothing for everyone)"
+        },
+        {
+          "type": 3,
+          "name": "name",
+          "description": "The monitor name (nothing to edit default permissions)"
+        },
+        {
+          "type": 4,
+          "name": "host",
+          "description": "Allow or disallow edition of the host for a monitor",
+          "choices": [
+            {
+              "name": "True",
+              "value": 1
+            },
+            {
+              "name": "False",
+              "value": -1
+            },
+            {
+              "name": "Default",
+              "value": 0
+            }
+          ]
+        },
+        {
+          "type": 4,
+          "name": "message",
+          "description": "Allow or disallow edition of the message for a monitor",
+          "choices": [
+            {
+              "name": "True",
+              "value": 1
+            },
+            {
+              "name": "False",
+              "value": -1
+            },
+            {
+              "name": "Default",
+              "value": 0
+            }
+          ]
+        },
+        {
+          "type": 4,
+          "name": "creation",
+          "description": "Allow or disallow creation of monitors",
+          "choices": [
+            {
+              "name": "True",
+              "value": 1
+            },
+            {
+              "name": "False",
+              "value": -1
+            },
+            {
+              "name": "Default",
+              "value": 0
+            }
+          ]
+        },
+        {
+          "type": 4,
+          "name": "deletion",
+          "description": "Allow or disallow deletion of monitors",
+          "choices": [
+            {
+              "name": "True",
+              "value": 1
+            },
+            {
+              "name": "False",
+              "value": -1
+            },
+            {
+              "name": "Default",
+              "value": 0
+            }
+          ]
+        },
+        {
+          "type": 4,
+          "name": "userperms",
+          "description": "Allow or disallow edition of user permissions for a monitor",
+          "choices": [
+            {
+              "name": "True",
+              "value": 1
+            },
+            {
+              "name": "False",
+              "value": -1
+            },
+            {
+              "name": "Default",
+              "value": 0
+            }
+          ]
+        },
+        {
+          "type": 4,
+          "name": "viewinfos",
+          "description": "Allow or disallow info view for a monitor",
+          "choices": [
+            {
+              "name": "True",
+              "value": 1
+            },
+            {
+              "name": "False",
+              "value": -1
+            },
+            {
+              "name": "Default",
+              "value": 0
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

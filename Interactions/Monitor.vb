@@ -86,9 +86,6 @@ Namespace Bot.Interactions
                             Catch
                             End Try
                             If permissions.HasFlag(DSharpPlus.Permissions.Administrator) Or guild.Owner.Id = obj_user.id Then
-                                Console.BackgroundColor = ConsoleColor.Red
-                                Console.WriteLine("yes")
-                                Console.BackgroundColor = ConsoleColor.Black
                                 perms = New Database.MonitorPermission(True)
                             End If
                             If perms.creation Then
