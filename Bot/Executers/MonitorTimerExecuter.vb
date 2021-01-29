@@ -9,7 +9,7 @@ Namespace Bot
         Private Sub monitor_timer_Elapsed(sender As Object, e As ElapsedEventArgs) Handles monitor_timer.Elapsed
             Dim monitors As New Dictionary(Of String, JObject)
             Dim client As WebClient = New WebClient()
-            For Each guild In Bot.Client.Guilds
+            For Each guild In Bot.Client.Guilds.ToList
                 Try
                     Dim guild_config As Database.Guild = Database.GetOrCreateGuild(guild.Key)
                     Dim lang_ = guild_config.lang
@@ -55,7 +55,7 @@ Namespace Bot
 
                                             embed.WithTimestamp(Date.UtcNow)
                                             embed.WithDescription($"__{server("name")}__")
-                                            embed.AddField(Lang.Translate(lang_, "monitor.ip"), $"{server("ip")}:{server("port")}", True)
+                                            embed.AddField(Lang.Translate(lang_, "monitor.ip"), $"`{server("ip")}:{server("port")}`", True)
                                             embed.AddField(Lang.Translate(lang_, "monitor.map"), server("map"), True)
                                             embed.AddField(Lang.Translate(lang_, "monitor.players"), $"{server("players")}/{server("places")}", True)
                                             Select Case server("mod").ToString
@@ -69,7 +69,7 @@ Namespace Bot
                                                 embed.WithAuthor(Lang.Translate(lang_, "monitor.error.unknown"),, "https://github.com/ZaptoInc/SourceServers/raw/main/games/unknown.png")
                                             End If
                                             embed.WithTimestamp(Date.UtcNow)
-                                            embed.AddField(Lang.Translate(lang_, "monitor.ip"), $"{monitor.Value.IP}:{monitor.Value.port}", True)
+                                            embed.AddField(Lang.Translate(lang_, "monitor.ip"), $"`{monitor.Value.IP}:{monitor.Value.port}`", True)
                                             embed.AddField(Lang.Translate(lang_, "monitor.map"), "?", True)
                                             embed.AddField(Lang.Translate(lang_, "monitor.players"), "?/?", True)
                                         End If

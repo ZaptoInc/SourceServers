@@ -84,8 +84,8 @@
         Public port As Integer
         Public perms As New Dictionary(Of ULong, MonitorPermission)
         Public defaultperms As New MonitorPermission
-        Public channelid As ULong = Nothing
-        Public messageid As ULong = Nothing
+        Public channelid As String = 0
+        Public messageid As String = 0
 
         Function GetOrCreatePerms(userid As ULong) As MonitorPermission
             If perms.ContainsKey(userid) Then

